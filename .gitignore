@@ -1,0 +1,11 @@
+# Binary
+instrweave
+icomp
+
+# macOS
+.DS_Store
+
+# Go
+*.test
+*.out
+/vendor/
