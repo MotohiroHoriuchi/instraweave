@@ -58,7 +58,7 @@ fragments:
 | ターゲット | デフォルト出力先 |
 |-----------|----------------|
 | `copilot` | `.github/copilot-instructions.md` |
-| `claude` | `CLAUDE.md` |
+| `claude` | `.claude/CLAUDE.md` |
 
 ## フラグメント構成
 

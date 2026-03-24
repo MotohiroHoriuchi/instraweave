@@ -4,7 +4,7 @@ import "fmt"
 
 var defaultOutputPaths = map[string]string{
 	"copilot": ".github/copilot-instructions.md",
-	"claude":  "CLAUDE.md",
+	"claude":  ".claude/CLAUDE.md",
 }
 
 type AgentPaths struct {
