@@ -1,4 +1,4 @@
-# instrweave
+# instraweave
 
 A CLI tool that composes AI agent instruction files from reusable rule fragments.
 
@@ -6,7 +6,7 @@ A CLI tool that composes AI agent instruction files from reusable rule fragments
 
 ## Overview
 
-`instrweave` lets you manage AI coding agent instructions (e.g., GitHub Copilot, Claude) as modular Markdown fragments organized by category. Define a YAML recipe to select which fragments to include, and `instrweave` assembles them into a single instructions file.
+`instraweave` lets you manage AI coding agent instructions (e.g., GitHub Copilot, Claude) as modular Markdown fragments organized by category. Define a YAML recipe to select which fragments to include, and `instraweave` assembles them into a single instructions file.
 
 ## Installation
 
@@ -19,28 +19,28 @@ Or build from source:
 ```bash
 git clone https://github.com/MotohiroHoriuchi/instraweave.git
 cd instraweave
-go build -o instrweave .
+go build -o instraweave .
 ```
 
 ## Quick Start
 
 ```bash
 # 1. Initialize a sample recipe and fragments directory
-instrweave init
+instraweave init
 
 # 2. List available fragments
-instrweave list
+instraweave list
 
 # 3. Preview the composed output
-instrweave generate --dry-run
+instraweave generate --dry-run
 
 # 4. Generate the instructions file
-instrweave generate
+instraweave generate
 ```
 
 ## Recipe File
 
-`instrweave` uses a YAML recipe file (`instrweave-recipe.yaml`) to define what to generate:
+`instraweave` uses a YAML recipe file (`instraweave-recipe.yaml`) to define what to generate:
 
 ```yaml
 target: copilot              # copilot | claude
@@ -78,21 +78,21 @@ Fragment names in the recipe correspond to file paths under `fragments_dir`, wit
 
 ## Commands
 
-### `instrweave init`
+### `instraweave init`
 
-Creates a sample `instrweave-recipe.yaml` and `fragments/` directory in the current directory.
+Creates a sample `instraweave-recipe.yaml` and `fragments/` directory in the current directory.
 
 ```bash
-instrweave init
+instraweave init
 ```
 
-### `instrweave list`
+### `instraweave list`
 
 Lists all available fragments in the specified directory.
 
 ```bash
-instrweave list
-instrweave list --dir ./my-fragments
+instraweave list
+instraweave list --dir ./my-fragments
 ```
 
 | Flag | Short | Default | Description |
@@ -100,15 +100,15 @@ instrweave list --dir ./my-fragments
 | `--dir` | `-d` | `./fragments` | Fragments directory |
 | `--verbose` | `-v` | `false` | Show fragment contents |
 
-### `instrweave show`
+### `instraweave show`
 
 Shows the content of one or more fragments. Useful for AI agents to inspect fragments before building a recipe.
 
 ```bash
-instrweave show standard/go
-instrweave show standard/go standard/testing
-instrweave show --all
-instrweave show --all --dir ./my-fragments
+instraweave show standard/go
+instraweave show standard/go standard/testing
+instraweave show --all
+instraweave show --all --dir ./my-fragments
 ```
 
 | Flag | Short | Default | Description |
@@ -116,28 +116,28 @@ instrweave show --all --dir ./my-fragments
 | `--dir` | `-d` | `./fragments` | Fragments directory |
 | `--all` | | `false` | Show all fragments |
 
-### `instrweave generate`
+### `instraweave generate`
 
 Reads the recipe file and composes fragments into an instructions file.
 
 ```bash
-instrweave generate
-instrweave generate --recipe ./my-recipe.yaml
-instrweave generate --dry-run
+instraweave generate
+instraweave generate --recipe ./my-recipe.yaml
+instraweave generate --dry-run
 ```
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
-| `--recipe` | `-r` | `./instrweave-recipe.yaml` | Path to recipe file |
+| `--recipe` | `-r` | `./instraweave-recipe.yaml` | Path to recipe file |
 | `--dry-run` | | `false` | Print to stdout instead of writing to file |
 
-### `instrweave decompose`
+### `instraweave decompose`
 
 Splits a single Markdown file into fragment files by header level.
 
 ```bash
-instrweave decompose --file CLAUDE.md
-instrweave decompose --file docs/guide.md --level 1 --dir ./fragments/custom/
+instraweave decompose --file CLAUDE.md
+instraweave decompose --file docs/guide.md --level 1 --dir ./fragments/custom/
 ```
 
 | Flag | Short | Default | Description |
@@ -146,14 +146,14 @@ instrweave decompose --file docs/guide.md --level 1 --dir ./fragments/custom/
 | `--level` | `-l` | `2` | Header level used as split boundary (1–6) |
 | `--dir` | `-d` | `./fragments` | Output directory for fragment files |
 
-### `instrweave agent`
+### `instraweave agent`
 
-Installs AI agent prompt/command files so your agent can manage instrweave directly.
+Installs AI agent prompt/command files so your agent can manage instraweave directly.
 
 ```bash
-instrweave agent --target claude
-instrweave agent --target copilot
-instrweave agent --target claude --force   # overwrite existing files
+instraweave agent --target claude
+instraweave agent --target copilot
+instraweave agent --target claude --force   # overwrite existing files
 ```
 
 | Flag | Short | Default | Description |
@@ -165,12 +165,12 @@ instrweave agent --target claude --force   # overwrite existing files
 
 | Target | Use command | Decompose command |
 |--------|-------------|-------------------|
-| `claude` | `.claude/commands/instrweave.md` | `.claude/commands/instrweave-decompose.md` |
-| `copilot` | `.github/prompts/instrweave.prompt.md` | `.github/prompts/instrweave-decompose.prompt.md` |
+| `claude` | `.claude/commands/instraweave.md` | `.claude/commands/instraweave-decompose.md` |
+| `copilot` | `.github/prompts/instraweave.prompt.md` | `.github/prompts/instraweave-decompose.prompt.md` |
 
-The **decompose command** guides the agent to decompose existing documents into instrweave fragments:
+The **decompose command** guides the agent to decompose existing documents into instraweave fragments:
 
-- **Header-based splitting** (preferred): uses `instrweave decompose` when consistent headers exist.
+- **Header-based splitting** (preferred): uses `instraweave decompose` when consistent headers exist.
 - **Semantic splitting** (fallback): when headers are absent or sparse, the agent infers logical topic boundaries from meaning and creates fragments manually.
 - **Verbatim constraint**: body text is always copied as-is — no rewrites, paraphrasing, or additions.
 

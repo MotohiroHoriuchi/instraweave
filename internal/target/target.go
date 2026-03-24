@@ -14,12 +14,12 @@ type AgentPaths struct {
 
 var agentFilePaths = map[string]AgentPaths{
 	"claude": {
-		UseCommand:       ".claude/commands/instrweave.md",
-		DecomposeCommand: ".claude/commands/instrweave-decompose.md",
+		UseCommand:       ".claude/commands/instraweave.md",
+		DecomposeCommand: ".claude/commands/instraweave-decompose.md",
 	},
 	"copilot": {
-		UseCommand:       ".github/prompts/instrweave.prompt.md",
-		DecomposeCommand: ".github/prompts/instrweave-decompose.prompt.md",
+		UseCommand:       ".github/prompts/instraweave.prompt.md",
+		DecomposeCommand: ".github/prompts/instraweave-decompose.prompt.md",
 	},
 }
 

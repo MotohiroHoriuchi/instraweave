@@ -14,7 +14,7 @@ fragments:
   - standard/go
   - custom/my-project
 `
-// instrweave-recipe.yaml is the default recipe file name
+// instraweave-recipe.yaml is the default recipe file name
 
 const sampleStandardFragment = `# Go Coding Standards
 
@@ -33,11 +33,11 @@ func init() {
 		Use:   "init",
 		Short: "Initialize a sample recipe and fragments directory",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			if _, err := os.Stat("instrweave-recipe.yaml"); err == nil {
-				return fmt.Errorf("instrweave-recipe.yaml already exists")
+			if _, err := os.Stat("instraweave-recipe.yaml"); err == nil {
+				return fmt.Errorf("instraweave-recipe.yaml already exists")
 			}
 
-			if err := os.WriteFile("instrweave-recipe.yaml", []byte(sampleRecipe), 0o644); err != nil {
+			if err := os.WriteFile("instraweave-recipe.yaml", []byte(sampleRecipe), 0o644); err != nil {
 				return fmt.Errorf("failed to create recipe file: %w", err)
 			}
 
@@ -58,7 +58,7 @@ func init() {
 				}
 			}
 
-			fmt.Println("Created instrweave-recipe.yaml and fragments/ directory.")
+			fmt.Println("Created instraweave-recipe.yaml and fragments/ directory.")
 			return nil
 		},
 	}

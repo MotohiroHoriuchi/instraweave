@@ -48,7 +48,7 @@ func init() {
 		},
 	}
 
-	generateCmd.Flags().StringVarP(&recipePath, "recipe", "r", "./instrweave-recipe.yaml", "path to recipe file")
+	generateCmd.Flags().StringVarP(&recipePath, "recipe", "r", "./instraweave-recipe.yaml", "path to recipe file")
 	generateCmd.Flags().BoolVar(&dryRun, "dry-run", false, "print to stdout instead of writing file")
 	rootCmd.AddCommand(generateCmd)
 }

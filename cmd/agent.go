@@ -16,7 +16,7 @@ func init() {
 
 	agentCmd := &cobra.Command{
 		Use:   "agent",
-		Short: "Install AI agent prompt/command files for using instrweave",
+		Short: "Install AI agent prompt/command files for using instraweave",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			paths, err := target.AgentFiles(targetName)
 			if err != nil {

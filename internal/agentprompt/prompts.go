@@ -2,16 +2,16 @@ package agentprompt
 
 import _ "embed"
 
-//go:embed claude-instrweave.md
+//go:embed claude-instraweave.md
 var claudeUse string
 
-//go:embed claude-instrweave-decompose.md
+//go:embed claude-instraweave-decompose.md
 var claudeDecompose string
 
-//go:embed copilot-instrweave.prompt.md
+//go:embed copilot-instraweave.prompt.md
 var copilotUse string
 
-//go:embed copilot-instrweave-decompose.prompt.md
+//go:embed copilot-instraweave-decompose.prompt.md
 var copilotDecompose string
 
 func Get(target, kind string) string {
