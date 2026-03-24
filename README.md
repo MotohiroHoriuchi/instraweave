@@ -11,14 +11,14 @@ A CLI tool that composes AI agent instruction files from reusable rule fragments
 ## Installation
 
 ```bash
-go install github.com/motohirohoriuchi/instrweave@latest
+go install github.com/MotohiroHoriuchi/instraweave@latest
 ```
 
 Or build from source:
 
 ```bash
-git clone https://github.com/motohirohoriuchi/instrweave.git
-cd instrweave
+git clone https://github.com/MotohiroHoriuchi/instraweave.git
+cd instraweave
 go build -o instrweave .
 ```
 

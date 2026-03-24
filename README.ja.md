@@ -11,14 +11,14 @@
 ## インストール
 
 ```bash
-go install github.com/motohirohoriuchi/instrweave@latest
+go install github.com/MotohiroHoriuchi/instraweave@latest
 ```
 
 ソースからビルドする場合:
 
 ```bash
-git clone https://github.com/motohirohoriuchi/instrweave.git
-cd instrweave
+git clone https://github.com/MotohiroHoriuchi/instraweave.git
+cd instraweave
 go build -o instrweave .
 ```
 
