@@ -131,6 +131,49 @@ instrweave generate --dry-run
 | `--recipe` | `-r` | `./instrweave-recipe.yaml` | Path to recipe file |
 | `--dry-run` | | `false` | Print to stdout instead of writing to file |
 
+### `instrweave decompose`
+
+Splits a single Markdown file into fragment files by header level.
+
+```bash
+instrweave decompose --file CLAUDE.md
+instrweave decompose --file docs/guide.md --level 1 --dir ./fragments/custom/
+```
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--file` | `-f` | *(required)* | Markdown file to decompose |
+| `--level` | `-l` | `2` | Header level used as split boundary (1–6) |
+| `--dir` | `-d` | `./fragments` | Output directory for fragment files |
+
+### `instrweave agent`
+
+Installs AI agent prompt/command files so your agent can manage instrweave directly.
+
+```bash
+instrweave agent --target claude
+instrweave agent --target copilot
+instrweave agent --target claude --force   # overwrite existing files
+```
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--target` | `-t` | *(required)* | Agent target: `claude` or `copilot` |
+| `--force` | | `false` | Overwrite existing files |
+
+**Installed files per target:**
+
+| Target | Use command | Decompose command |
+|--------|-------------|-------------------|
+| `claude` | `.claude/commands/instrweave.md` | `.claude/commands/instrweave-decompose.md` |
+| `copilot` | `.github/prompts/instrweave.prompt.md` | `.github/prompts/instrweave-decompose.prompt.md` |
+
+The **decompose command** guides the agent to decompose existing documents into instrweave fragments:
+
+- **Header-based splitting** (preferred): uses `instrweave decompose` when consistent headers exist.
+- **Semantic splitting** (fallback): when headers are absent or sparse, the agent infers logical topic boundaries from meaning and creates fragments manually.
+- **Verbatim constraint**: body text is always copied as-is — no rewrites, paraphrasing, or additions.
+
 ## Example
 
 See the [`examples/fragments/`](examples/fragments/) directory for sample fragments.

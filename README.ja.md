@@ -131,6 +131,49 @@ instrweave generate --dry-run
 | `--recipe` | `-r` | `./instrweave-recipe.yaml` | レシピファイルのパス |
 | `--dry-run` | | `false` | ファイルに書き込まず標準出力に出力 |
 
+### `instrweave decompose`
+
+Markdownファイルをヘッダーレベルで分割してフラグメントファイルを生成します。
+
+```bash
+instrweave decompose --file CLAUDE.md
+instrweave decompose --file docs/guide.md --level 1 --dir ./fragments/custom/
+```
+
+| フラグ | 短縮形 | デフォルト | 説明 |
+|-------|--------|-----------|------|
+| `--file` | `-f` | *(必須)* | 分解対象のMarkdownファイル |
+| `--level` | `-l` | `2` | 分割に使うヘッダーレベル（1〜6） |
+| `--dir` | `-d` | `./fragments` | フラグメントファイルの出力ディレクトリ |
+
+### `instrweave agent`
+
+AIエージェントが instrweave を直接操作できるように、プロンプト/コマンドファイルをインストールします。
+
+```bash
+instrweave agent --target claude
+instrweave agent --target copilot
+instrweave agent --target claude --force   # 既存ファイルを上書き
+```
+
+| フラグ | 短縮形 | デフォルト | 説明 |
+|-------|--------|-----------|------|
+| `--target` | `-t` | *(必須)* | エージェントの種類: `claude` または `copilot` |
+| `--force` | | `false` | 既存ファイルを上書きする |
+
+**インストールされるファイル:**
+
+| ターゲット | useコマンド | decomposeコマンド |
+|-----------|------------|-----------------|
+| `claude` | `.claude/commands/instrweave.md` | `.claude/commands/instrweave-decompose.md` |
+| `copilot` | `.github/prompts/instrweave.prompt.md` | `.github/prompts/instrweave-decompose.prompt.md` |
+
+**decomposeコマンド**は、既存ドキュメント群をinstrweaveフラグメントに分解する手順をエージェントに提示します:
+
+- **ヘッダー分割**（優先）: 一貫したヘッダーがある場合は `instrweave decompose` を使用。
+- **セマンティック分割**（フォールバック）: ヘッダーがない・少ない場合は、意味からトピック境界を推論してフラグメントを手動作成。
+- **原文保持の制約**: 本文テキストは必ず逐語コピー — 書き換え・言い換え・追記は禁止。
+
 ## サンプル
 
 [`examples/fragments/`](examples/fragments/) ディレクトリにサンプルフラグメントがあります。
