@@ -58,7 +58,7 @@ fragments:
 | Target | Default Output Path |
 |--------|-------------------|
 | `copilot` | `.github/copilot-instructions.md` |
-| `claude` | `.claude/CLAUDE.md` |
+| `claude` | `CLAUDE.md` |
 
 ## Fragment Structure
 
