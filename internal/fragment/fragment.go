@@ -7,14 +7,30 @@ import (
 	"strings"
 )
 
+// Entry is a resolved fragment with its source directory.
+type Entry struct {
+	Name string
+	Dir  string
+}
+
+// Compose assembles fragments from a single directory (used for simple recipes without inheritance).
 func Compose(fragmentsDir string, names []string) (string, error) {
+	entries := make([]Entry, len(names))
+	for i, name := range names {
+		entries[i] = Entry{Name: name, Dir: fragmentsDir}
+	}
+	return ComposeEntries(entries)
+}
+
+// ComposeEntries assembles fragments where each entry may come from a different directory.
+func ComposeEntries(entries []Entry) (string, error) {
 	var parts []string
 
-	for _, name := range names {
-		path := filepath.Join(fragmentsDir, name+".md")
+	for _, e := range entries {
+		path := filepath.Join(e.Dir, e.Name+".md")
 		data, err := os.ReadFile(path)
 		if err != nil {
-			return "", fmt.Errorf("failed to read fragment %q: %w", name, err)
+			return "", fmt.Errorf("fragment file not found: %q", path)
 		}
 		parts = append(parts, strings.TrimSpace(string(data)))
 	}
