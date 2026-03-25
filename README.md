@@ -31,7 +31,7 @@ instraweave init
 # 2. List available fragments
 instraweave list
 
-# 3. Preview the composed output
+# 3. Preview the recipe resolution (inheritance chain and resolved fragments)
 instraweave generate --dry-run
 
 # 4. Generate the instructions file
@@ -232,7 +232,7 @@ instraweave generate --dry-run
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
 | `--recipe` | `-r` | `./instraweave-recipe.yaml` | Path to recipe file |
-| `--dry-run` | | `false` | Print to stdout instead of writing to file |
+| `--dry-run` | | `false` | Show inheritance chain and resolved fragments instead of writing to file |
 
 ### `instraweave decompose`
 

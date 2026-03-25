@@ -31,7 +31,7 @@ instraweave init
 # 2. 利用可能なフラグメント一覧を表示
 instraweave list
 
-# 3. 結合結果をプレビュー
+# 3. レシピの解決結果をプレビュー（継承チェーンと解決済みフラグメントを表示）
 instraweave generate --dry-run
 
 # 4. instructionsファイルを生成
@@ -232,7 +232,7 @@ instraweave generate --dry-run
 | フラグ | 短縮形 | デフォルト | 説明 |
 |-------|--------|-----------|------|
 | `--recipe` | `-r` | `./instraweave-recipe.yaml` | レシピファイルのパス |
-| `--dry-run` | | `false` | ファイルに書き込まず標準出力に出力 |
+| `--dry-run` | | `false` | ファイルに書き込まず継承チェーンと解決済みフラグメントを表示 |
 
 ### `instraweave decompose`
 
