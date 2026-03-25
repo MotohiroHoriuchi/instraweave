@@ -80,7 +80,7 @@ Fragment names in the recipe correspond to file paths under `fragments_dir`, wit
 
 ### `instraweave init`
 
-Creates a sample `instraweave-recipe.yaml` and `fragments/` directory in the current directory.
+Creates a sample `instraweave-recipe.yaml` and `fragments/` directory with starter fragments (`fragments/standard/go.md` and `fragments/custom/my-project.md`).
 
 ```bash
 instraweave init
@@ -167,6 +167,13 @@ instraweave agent --target claude --force   # overwrite existing files
 |--------|-------------|-------------------|
 | `claude` | `.claude/commands/instraweave.md` | `.claude/commands/instraweave-decompose.md` |
 | `copilot` | `.github/prompts/instraweave.prompt.md` | `.github/prompts/instraweave-decompose.prompt.md` |
+
+The **use command** guides the agent to review and update the project's AI agent instructions:
+
+- Lists available fragments and their contents.
+- Reviews the current recipe file.
+- Suggests which fragments to add or remove based on project needs.
+- Edits the recipe and regenerates the instructions file.
 
 The **decompose command** guides the agent to decompose existing documents into instraweave fragments:
 

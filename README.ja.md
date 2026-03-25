@@ -80,7 +80,7 @@ fragments/
 
 ### `instraweave init`
 
-カレントディレクトリにサンプルの `instraweave-recipe.yaml` と `fragments/` ディレクトリを生成します。
+カレントディレクトリにサンプルの `instraweave-recipe.yaml` と `fragments/` ディレクトリ（`fragments/standard/go.md` および `fragments/custom/my-project.md` を含む）を生成します。
 
 ```bash
 instraweave init
@@ -167,6 +167,13 @@ instraweave agent --target claude --force   # 既存ファイルを上書き
 |-----------|------------|-----------------|
 | `claude` | `.claude/commands/instraweave.md` | `.claude/commands/instraweave-decompose.md` |
 | `copilot` | `.github/prompts/instraweave.prompt.md` | `.github/prompts/instraweave-decompose.prompt.md` |
+
+**useコマンド**は、プロジェクトのAIエージェント用instructionsを確認・更新する手順をエージェントに提示します:
+
+- 利用可能なフラグメントとその内容を一覧表示する。
+- 現在のレシピファイルを確認する。
+- プロジェクトの状況に合わせて追加・削除するフラグメントを提案する。
+- レシピを更新し、instructionsファイルを再生成する。
 
 **decomposeコマンド**は、既存ドキュメント群をinstraweaveフラグメントに分解する手順をエージェントに提示します:
 
