@@ -60,6 +60,109 @@ fragments:
 | `copilot` | `.github/copilot-instructions.md` |
 | `claude` | `CLAUDE.md` |
 
+## Recipe Inheritance
+
+Recipes can inherit from another recipe using the `extends` field. This allows you to share a base set of fragments across teams or projects, and customize them per layer.
+
+### Basic Syntax
+
+A **derived recipe** (one with `extends`) uses operations instead of plain fragment names:
+
+```yaml
+extends: ../base/recipe.yaml   # relative or absolute path
+
+target: claude
+fragments_dir: ./fragments
+
+fragments:
+  - add: standard/go           # append to the list
+  - remove: standard/code-review  # remove from the list
+  - override: standard/security   # replace with this recipe's version
+```
+
+A **root recipe** (no `extends`) lists fragments as plain names:
+
+```yaml
+target: claude
+fragments_dir: ./fragments
+fragments:
+  - standard/security
+  - standard/git-convention
+  - standard/code-review
+```
+
+### Fragment Operations
+
+| Operation | Syntax | Behavior |
+|-----------|--------|----------|
+| *(plain)* | `- category/name` | Root recipe only. Error if used in a derived recipe. |
+| `add` | `- add: category/name` | Append to the list. Error if already present. |
+| `remove` | `- remove: category/name` | Remove from the list. Error if not present. |
+| `override` | `- override: category/name` | Replace the fragment's source with this recipe's `fragments_dir`. Error if not present. |
+
+### Inheritance Chain
+
+`extends` is resolved recursively. Operations are applied from root to derived (last wins):
+
+```
+org/recipe.yaml          ← root (plain fragments)
+  └─ team/recipe.yaml    ← adds Go, removes code-review
+       └─ project/recipe.yaml  ← overrides security, adds db-convention
+```
+
+Each fragment is read from the `fragments_dir` of the recipe that **last modified it**:
+
+- Plain fragment in root → resolved from root's `fragments_dir`
+- `add` → resolved from the recipe that added it
+- `override` → resolved from the recipe that overrode it
+
+`target` and `output` are also inherited; a derived recipe's value overrides its parent's.
+
+### Directory Structure Example
+
+```
+org/
+├── recipe.yaml
+└── fragments/
+    └── standard/
+        ├── security.md
+        ├── git-convention.md
+        └── code-review.md
+
+team-backend/
+├── recipe.yaml          # extends: ../org/recipe.yaml
+└── fragments/
+    ├── standard/
+    │   └── go.md
+    └── custom/
+        └── our-code-review.md
+
+project-payment/
+├── recipe.yaml          # extends: ../team-backend/recipe.yaml
+└── fragments/
+    └── standard/
+        └── security.md  # overrides org's version
+```
+
+### dry-run Output
+
+`instraweave generate --dry-run` shows the resolved inheritance chain and fragment sources:
+
+```
+Inheritance chain:
+  org/recipe.yaml           (root)
+       └─ team-backend/recipe.yaml
+            └─ project-payment/recipe.yaml  (current)
+
+Resolved fragments:
+  standard/security        ← project-payment/fragments/standard/security.md  [override]
+  standard/git-convention  ← org/fragments/standard/git-convention.md
+  standard/go              ← team-backend/fragments/standard/go.md            [add]
+  custom/our-code-review   ← team-backend/fragments/custom/our-code-review.md [add]
+
+Output: CLAUDE.md
+```
+
 ## Fragment Structure
 
 Fragments are Markdown files organized in subdirectories:
