@@ -60,6 +60,109 @@ fragments:
 | `copilot` | `.github/copilot-instructions.md` |
 | `claude` | `CLAUDE.md` |
 
+## レシピ継承
+
+`extends` フィールドを使うと、別のレシピを基底として継承できます。チームやプロジェクト間でベースとなるフラグメントセットを共有しながら、各レイヤーでカスタマイズできます。
+
+### 基本構文
+
+**派生レシピ**（`extends` あり）はプレーン名の代わりにオペレーションを使います:
+
+```yaml
+extends: ../base/recipe.yaml   # 相対パスまたは絶対パス
+
+target: claude
+fragments_dir: ./fragments
+
+fragments:
+  - add: standard/go             # リスト末尾に追加
+  - remove: standard/code-review # リストから削除
+  - override: standard/security  # このレシピのバージョンで上書き
+```
+
+**ルートレシピ**（`extends` なし）はフラグメント名をプレーンに列挙します:
+
+```yaml
+target: claude
+fragments_dir: ./fragments
+fragments:
+  - standard/security
+  - standard/git-convention
+  - standard/code-review
+```
+
+### フラグメントオペレーション
+
+| オペレーション | 構文 | 動作 |
+|-------------|------|------|
+| *(省略)* | `- category/name` | ルートレシピのみ使用可。派生レシピで使うとエラー。 |
+| `add` | `- add: category/name` | リスト末尾に追加。すでに存在する場合はエラー。 |
+| `remove` | `- remove: category/name` | リストから削除。存在しない場合はエラー。 |
+| `override` | `- override: category/name` | このレシピの `fragments_dir` で解決するよう変更。存在しない場合はエラー。 |
+
+### 継承チェーン
+
+`extends` は再帰的に解決されます。オペレーションはルートから派生方向へ順に適用されます（後が勝つ）:
+
+```
+org/recipe.yaml          ← ルート（プレーン指定）
+  └─ team/recipe.yaml    ← Go追加、code-review削除
+       └─ project/recipe.yaml  ← security上書き、db-convention追加
+```
+
+各fragmentは**最後に操作したレシピの `fragments_dir`** から読み込まれます:
+
+- ルートのプレーン指定 → ルートの `fragments_dir`
+- `add` したfragment → そのaddを書いたレシピの `fragments_dir`
+- `override` したfragment → そのoverrideを書いたレシピの `fragments_dir`
+
+`target` と `output` も継承され、派生レシピに記述があれば親の値を上書きします。
+
+### ディレクトリ構成例
+
+```
+org/
+├── recipe.yaml
+└── fragments/
+    └── standard/
+        ├── security.md
+        ├── git-convention.md
+        └── code-review.md
+
+team-backend/
+├── recipe.yaml          # extends: ../org/recipe.yaml
+└── fragments/
+    ├── standard/
+    │   └── go.md
+    └── custom/
+        └── our-code-review.md
+
+project-payment/
+├── recipe.yaml          # extends: ../team-backend/recipe.yaml
+└── fragments/
+    └── standard/
+        └── security.md  # org版をoverride
+```
+
+### dry-run 出力
+
+`instraweave generate --dry-run` を実行すると、継承チェーンと各fragmentの解決元が表示されます:
+
+```
+Inheritance chain:
+  org/recipe.yaml           (root)
+       └─ team-backend/recipe.yaml
+            └─ project-payment/recipe.yaml  (current)
+
+Resolved fragments:
+  standard/security        ← project-payment/fragments/standard/security.md  [override]
+  standard/git-convention  ← org/fragments/standard/git-convention.md
+  standard/go              ← team-backend/fragments/standard/go.md            [add]
+  custom/our-code-review   ← team-backend/fragments/custom/our-code-review.md [add]
+
+Output: CLAUDE.md
+```
+
 ## フラグメント構成
 
 フラグメントはサブディレクトリに整理されたMarkdownファイルです:
