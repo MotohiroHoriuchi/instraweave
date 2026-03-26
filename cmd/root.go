@@ -5,8 +5,10 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "instraweave",
-	Short: "instraweave: build AI agent instructions from fragments",
+	Use:           "instraweave",
+	Short:         "instraweave: build AI agent instructions from fragments",
+	SilenceUsage:  true,
+	SilenceErrors: true,
 }
 
 func Execute() error {
